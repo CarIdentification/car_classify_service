@@ -1,0 +1,106 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("se.transmode.gradle:gradle-docker:1.2")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'application'
+apply plugin: 'docker'
+
+group = 'com.rainbow.car'
+version = '0.0.1-SNAPSHOT'
+//指定编译.java文件的jdk版本
+sourceCompatibility = 1.8
+//确保.class文件与targetCompatibility所指定版本或者更新版本的java虚拟机兼容
+targetCompatibility = 1.8
+
+mainClassName = "com.rainbow.car.car.CarApplication"
+
+//配置镜像名称和版本号
+jar {
+    baseName = "car-classify-service"
+    version = "0.0.1-SNAPSHOT"
+}
+
+//配置docker构建基础信息
+docker {
+    baseImage 'store/oracle/serverjre:8'
+    maintainer 'rainbowcar'
+    registry 'car'
+
+}
+
+//taskBuilder 的任务配置
+task dockerBuilder(type: Docker) {
+    applicationName = jar.baseName
+    tagVersion = jar.version
+    volume('/tmp')
+    //发布到远程docker hub仓库
+    push = project.hasProperty('push')
+    addFile("${jar.baseName}-${jar.version}.jar","app.jar")
+    entryPoint(["java","-Djava.security.egd=file:/dev/./urandom","-jar",'app.jar'])
+    exposePort(8765)
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
+}
+
+repositories {
+
+
+//	mavenLocal()
+//	//使用阿里云镜像
+//	maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+
+    mavenCentral()
+
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+
+ext {
+    springCloudVersion = 'Finchley.M9'
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
+//	compile('com.zaxxer:HikariCP:2.7.8')
+    compile('com.alibaba:fastjson:1.2.55')
+    //redis
+    compile('org.springframework.boot:spring-boot-starter-cache:2.0.2.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-data-redis:2.0.2.RELEASE')
+    compile( 'redis.clients:jedis:2.9.0')
+
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
+//	compile('com.alibaba:druid-spring-boot-starter:1.1.9')
+    compile('com.alibaba:druid:1.1.10')
+    compile('mysql:mysql-connector-java')
+    compile('com.baidu.aip:java-sdk:4.10.0'){
+        exclude group:'org.slf4j', module:'slf4j-simple'
+    }
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+//	compile('org.springframework.cloud:spring-cloud-starter-config')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

@@ -12,7 +12,6 @@ import java.util.Date;
  */
 public class FileUtil {
     /**
-     * TODO
      * @param root     根目录
      * @param file
      * @param dirName
@@ -20,12 +19,12 @@ public class FileUtil {
      * @return
      */
     public static String saveFile(String root, MultipartFile file, String dirName, String fileName) throws IOException {
-        String dir = root + "/" + dirName;
+        String dir = root + File.separator + dirName;
         File desDir = new File(dir);
 
         // 文件后缀名
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        File newFile = new File(desDir, fileName + new Date().toString() + suffix);
+        File newFile = new File(desDir, fileName + DateUtil.getFileFormatDate(new Date()) + suffix);
 
         if (desDir.exists()) {
             file.transferTo(newFile);
