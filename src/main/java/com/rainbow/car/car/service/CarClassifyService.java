@@ -2,6 +2,7 @@ package com.rainbow.car.car.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.baidu.aip.imageclassify.AipImageClassify;
+import com.rainbow.car.car.dao.CarDao;
 import com.rainbow.car.car.util.ClassifyClient;
 import com.rainbow.car.car.util.FileUtil;
 import com.rainbow.car.car.util.JSONUtil;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 public class CarClassifyService {
+
+  @Autowired
+  private CarDao carDao;
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
@@ -66,7 +71,18 @@ public class CarClassifyService {
     // 参数为本地路径
     JSONObject res = client.carDetect(filePath, options);
     System.out.println(res.toString(2));
-    return JSONUtil.jsonArrayCovert(res.getJSONArray("result"));
+    org.json.JSONArray arr = res.getJSONArray("result");
+    JSONArray resultArray = new JSONArray();
+    for(int i = 0; i < arr.length();i++){
+      JSONObject obj = arr.getJSONObject(i);
+      String name = obj.getString("name");
+      Integer carId = carDao.queryCarIdByNameLike(name);
+      if(carId != null){
+        resultArray.add(carId);
+      }
+    }
+
+    return resultArray;
 
 
   }

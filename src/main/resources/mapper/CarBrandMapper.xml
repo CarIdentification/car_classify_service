@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rainbow.car.car.dao.CarDao">
+
+
+  <select id="queryCarIdByNameLike" resultType="java.lang.Integer">
+    SELECT car_data.`id`
+    FROM car AS car_data,
+         (SELECT id
+          FROM car_brand
+          WHERE `name` LIKE
+                concat('%',#{name},'%')) AS brain_id
+    WHERE car_data.`car_brand` = brain_id.`id` LIMIT 1
+  </select>
+
+</mapper>

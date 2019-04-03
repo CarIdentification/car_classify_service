@@ -18,6 +18,7 @@ mybatis:
   typeAliasesPackage: com.discern.car.dao
   mapperLocations: classpath*:mapper/*.xml
 
+
 #开发配置
 spring:
   #  profiles: dev
