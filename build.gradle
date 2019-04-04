@@ -96,6 +96,7 @@ dependencies {
         exclude group:'org.slf4j', module:'slf4j-simple'
     }
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
 //	compile('org.springframework.cloud:spring-cloud-starter-config')
 }
 
