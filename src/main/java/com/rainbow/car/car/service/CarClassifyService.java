@@ -32,7 +32,7 @@ public class CarClassifyService {
   @Autowired
   private CarDao carDao;
 
-  private Pattern PURE_NAME_PATTERN = Pattern.compile("【(.*?)】.*?_.*?报价_.*?图片_汽车之家");
+  private Pattern PURE_NAME_PATTERN = Pattern.compile("【(.*?)图片】.*?_.*?图片_汽车图片库_汽车之家");
 
   private static final String AUTOHOME_PREFIX = "汽车之家 ";
 
@@ -113,7 +113,11 @@ public class CarClassifyService {
 
       Matcher matcher = PURE_NAME_PATTERN.matcher(text);
       if (matcher.find()) {
-        return matcher.group(1);
+        String rs = matcher.group(1);
+        if(rs.indexOf('】')>=0){
+          rs = rs.substring(0,rs.indexOf('】'));
+          return rs;
+        }
       }
     }
     return name;

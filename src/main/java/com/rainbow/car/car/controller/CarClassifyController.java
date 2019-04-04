@@ -4,7 +4,6 @@ import com.rainbow.car.car.service.CarClassifyService;
 import com.rainbow.car.car.vo.BaseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2019/3/12 4:24 PM
  */
 @RestController
-@RequestMapping("/rainbow")
 public class CarClassifyController {
     @Autowired
     private CarClassifyService carClassifyService;
