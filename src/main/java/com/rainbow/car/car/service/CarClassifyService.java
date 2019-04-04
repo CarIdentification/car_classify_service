@@ -6,9 +6,9 @@ import com.rainbow.car.car.dao.CarDao;
 import com.rainbow.car.car.util.ClassifyClient;
 import com.rainbow.car.car.util.FileUtil;
 import com.rainbow.car.car.util.HttpClientUtil;
-import com.rainbow.car.car.util.JSONUtil;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.JSONObject;
@@ -34,7 +34,9 @@ public class CarClassifyService {
 
   private Pattern PURE_NAME_PATTERN = Pattern.compile("【(.*?)】.*?_.*?报价_.*?图片_汽车之家");
 
-  public static final String AUTOHOME_PREFIX = "汽车之家 ";
+  private static final String AUTOHOME_PREFIX = "汽车之家 ";
+
+  private ConcurrentHashMap<String,String> pureNameCache = new ConcurrentHashMap<>();
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
@@ -82,7 +84,16 @@ public class CarClassifyService {
     for (int i = 0; i < arr.length(); i++) {
       JSONObject obj = arr.getJSONObject(i);
       String name = obj.getString("name");
-      name = carPureNameResolve(name);
+
+      if(pureNameCache.contains(name)){
+        name = pureNameCache.get(name);
+      }else{
+        //这里不做并发控制
+        String pureName = carPureNameResolve(name);
+        pureNameCache.put(name,pureName);
+        name = pureName;
+      }
+
       logger.info(name);
       Integer carId = carDao.queryCarIdByNameLike(name);
       if (carId != null) {
