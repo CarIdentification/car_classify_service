@@ -14,4 +14,24 @@
     WHERE car_data.`car_brand` = brain_id.`id` LIMIT 1
   </select>
 
+
+    <insert id="insertClassifyHistory">
+        insert into search_history_pic
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="picPath != null" >
+                pic1,
+            </if>
+            <if test="userId != null" >
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="picPath != null" >
+                #{picPath,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 </mapper>

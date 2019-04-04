@@ -25,14 +25,15 @@ public class CarClassifyController {
      */
     @PostMapping("/classify/car")
     @ResponseBody
-    public BaseResult classifyCar(@RequestParam(name = "carImg", required = true) MultipartFile carImg,@RequestParam(name = "type", required = false, defaultValue = "0") Integer type){
+    public BaseResult classifyCar(@RequestParam(name = "carImg", required = true) MultipartFile carImg,@RequestParam(name = "type", required = false, defaultValue = "0") Integer type,
+                                  @RequestParam(name = "userId", required = false) Integer userId){
         BaseResult result = new BaseResult();
         String filePath = carClassifyService.saveToClassifyDirectory(carImg);
         if(filePath == null){
             return result.toError().setMsg("保存失败");
         }
         if(type == 0){
-            result.setData(carClassifyService.outsideInterfaceClassifyCar(filePath));
+            result.setData(carClassifyService.outsideInterfaceClassifyCar(filePath,userId));
         }else if(type == 1){
             result.setData(carClassifyService.insideInterfaceClassifyCar(filePath));
         }
