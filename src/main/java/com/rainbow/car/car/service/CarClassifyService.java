@@ -71,7 +71,7 @@ public class CarClassifyService {
 
 
   // 车型识别sample
-  public JSONArray outsideInterfaceClassifyCar(String filePath) {
+  public JSONArray outsideInterfaceClassifyCar(String filePath,Integer userId) {
     // 传入可选参数调用接口
     HashMap<String, String> options = new HashMap<>();
     options.put("top_num", "3");
@@ -100,6 +100,12 @@ public class CarClassifyService {
         resultArray.add(carId);
       }
     }
+
+    // 写入搜索历史
+    userId = userId == null ? 0 : userId;
+    logger.info(filePath + "userId : " + userId);
+    carDao.insertClassifyHistory(userId,filePath);
+
     return resultArray;
   }
 
@@ -118,5 +124,4 @@ public class CarClassifyService {
     }
     return name;
   }
-
 }
