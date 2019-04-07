@@ -1,6 +1,6 @@
 rainbow:
   file:
-    root: D:\\rainbowCar
+    root: /data/classified_img
 
 eureka:
   client:
