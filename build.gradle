@@ -18,8 +18,8 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'application'
 apply plugin: 'docker'
 
-group = 'com.rainbow.car'
-version = '0.0.1-SNAPSHOT'
+group = 'kebencool'
+version = '0.0.2-SNAPSHOT'
 //指定编译.java文件的jdk版本
 sourceCompatibility = 1.8
 //确保.class文件与targetCompatibility所指定版本或者更新版本的java虚拟机兼容
@@ -30,7 +30,7 @@ mainClassName = "com.rainbow.car.car.CarApplication"
 //配置镜像名称和版本号
 jar {
     baseName = "car-classify-service"
-    version = "0.0.1-SNAPSHOT"
+    version = "0.0.2-SNAPSHOT"
 }
 
 //配置docker构建基础信息
