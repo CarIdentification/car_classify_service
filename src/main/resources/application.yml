@@ -8,6 +8,10 @@ eureka:
       defaultZone: http://119.29.208.119:8761/eureka/
 server:
   port: 8765
+  ssl:
+      key-store: classpath:www.kebencool.cn.jks
+      key-store-password: 1464q178c0lp330
+      keyStoreType: JKS
 
 multipart:
   maxFileSize: 10Mb
