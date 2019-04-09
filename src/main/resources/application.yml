@@ -1,17 +1,17 @@
 rainbow:
   file:
-    root: /data/classified_img
-
+#    root: /data/classified_img
+    root: D:\\uploadPic
 eureka:
   client:
     serviceUrl:
       defaultZone: http://119.29.208.119:8761/eureka/
 server:
   port: 8765
-  ssl:
-      key-store: classpath:www.kebencool.cn.jks
-      key-store-password: 1464q178c0lp330
-      keyStoreType: JKS
+#  ssl:
+#      key-store: classpath:www.kebencool.cn.jks
+#      key-store-password: 1464q178c0lp330
+#      keyStoreType: JKS
 
 multipart:
   maxFileSize: 10Mb
@@ -32,10 +32,10 @@ spring:
     # 配置数据源类型
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://119.29.208.119:3306/car?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useSSL=false&autoReconnect=true
+    url: jdbc:mysql://119.29.79.92:3306/car?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useSSL=false&autoReconnect=true
     #    url: jdbc:mysql://119.29.208.119:3306/car?useUnicode=true&characterEncoding=utf8mb4&rewriteBatchedStatements=true&useSSL=false
-    username: xiaoxu
-    password: xiaoxu
+    username: bdssiteManage
+    password: abc012300
     # 初始化，最小，最大连接数
     initialSize: 3
     minidle: 3
